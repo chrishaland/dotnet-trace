@@ -1,1 +1,2 @@
 # dotnet-trace
+[![Build Status](https://chrishaland.visualstudio.com/dotnet-trace/_apis/build/status/chrishaland.dotnet-trace?branchName=main)](https://chrishaland.visualstudio.com/dotnet-trace/_build/latest?definitionId=1&branchName=main)
