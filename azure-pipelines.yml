@@ -1,0 +1,27 @@
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Build .NET 5
+  inputs:
+    command: 'build'
+    arguments: '--framework net5.0'
+
+- task: DotNetCoreCLI@2
+  displayName: Build .NET Core 3.1
+  inputs:
+    command: 'build'
+    arguments: '--framework netcoreapp3.1'
+
+- task: DotNetCoreCLI@2
+  displayName: Test .NET 5
+  inputs:
+    command: 'test'
+    arguments: '--framework net5.0'
+
+- task: DotNetCoreCLI@2
+  displayName: Test .NET Core 3.1
+  inputs:
+    command: 'test'
+    arguments: '--framework netcoreapp3.1'
