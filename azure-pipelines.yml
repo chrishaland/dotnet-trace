@@ -1,27 +1,46 @@
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Build .NET 5
-  inputs:
-    command: 'build'
-    arguments: '--framework net5.0'
+stages:
 
-- task: DotNetCoreCLI@2
-  displayName: Build .NET Core 3.1
-  inputs:
-    command: 'build'
-    arguments: '--framework netcoreapp3.1'
+- stage: build
+  displayName: Build
+  jobs: 
 
-- task: DotNetCoreCLI@2
-  displayName: Test .NET 5
-  inputs:
-    command: 'test'
-    arguments: '--framework net5.0'
+  - job: build_dotnet_5
+    displayName: Build .NET 5
+    container: mcr.microsoft.com/dotnet/sdk:5.0
+    steps:
+    - script: dotnet build --configuration Release --framework net5.0
 
-- task: DotNetCoreCLI@2
-  displayName: Test .NET Core 3.1
-  inputs:
-    command: 'test'
-    arguments: '--framework netcoreapp3.1'
+  - job: build_dotnet_core_3_1
+    displayName: Build .NET Core 3.1
+    container: mcr.microsoft.com/dotnet/sdk:3.1
+    steps:
+    - script: dotnet build --configuration Release --framework netcoreapp3.1
+
+- stage: test
+  displayName: Test
+  jobs: 
+
+  - job: test_dotnet_5
+    displayName: Test .NET 5
+    container: mcr.microsoft.com/dotnet/sdk:5.0
+    steps:
+    - script: dotnet test --framework net5.0 --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: NUnit
+        testResultsFiles: '**/test-result.xml'
+        failTaskOnFailedTests: true
+
+  - job: test_dotnet_core_3_1
+    displayName: Test .NET Core 3.1
+    container: mcr.microsoft.com/dotnet/sdk:3.1
+    steps:
+    - script: dotnet test --framework netcoreapp3.1 --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: NUnit
+        testResultsFiles: '**/test-result.xml'
+        failTaskOnFailedTests: true
