@@ -49,7 +49,7 @@ public class TestServerSetup
         .UseStartup<Tests.HttpTestServer2.Startup>()
         .ConfigureTestServices(services =>
         {
-            //services.AddHttpClient().ConfigurePrimaryHttpMessageHandler(_ => handler);
+            services.AddHttpClient("").ConfigurePrimaryHttpMessageHandler(_ => handler);
             services.AddHttpClient("named").ConfigurePrimaryHttpMessageHandler(_ => handler);
             services.AddHttpClient<Tests.HttpTestServer2.TypedHttpClient>().ConfigurePrimaryHttpMessageHandler(_ => handler);
         });

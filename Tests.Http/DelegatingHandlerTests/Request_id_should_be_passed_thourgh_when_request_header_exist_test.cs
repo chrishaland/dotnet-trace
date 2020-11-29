@@ -10,7 +10,7 @@ namespace Tests.Http
     {
         private const string RequestId = "80f198ee56343ba864fe8b2a57d3eff7";
 
-        //[TestCase("/basic")]
+        [TestCase("/basic")]
         [TestCase("/named")]
         [TestCase("/typed")]
         public async Task Request_id_should_be_passed_thourgh_when_request_header_exist(string requestUri)
@@ -22,7 +22,7 @@ namespace Tests.Http
             AssertRequestIdIsSetProperly(traces);
         }
 
-        //[TestCase("/basic")]
+        [TestCase("/basic")]
         [TestCase("/named")]
         [TestCase("/typed")]
         public async Task Request_id_should_be_passed_thourgh_when_request_content_header_exist(string requestUri)

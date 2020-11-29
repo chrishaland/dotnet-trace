@@ -15,7 +15,7 @@ namespace Tests.Http
         private const string Flags = "1";
         private static readonly string _b3 = $"{TraceId}-{SpanId}-{Sampled}-{ParentSpanId}";
 
-        //[TestCase("/basic")]
+        [TestCase("/basic")]
         [TestCase("/named")]
         [TestCase("/typed")]
         public async Task B3_traces_should_be_added_to_outgoing_requests(string requestUri)
@@ -32,7 +32,7 @@ namespace Tests.Http
             AssertTracesAreSetProperly(traces);
         }
 
-        //[TestCase("/basic")]
+        [TestCase("/basic")]
         [TestCase("/named")]
         [TestCase("/typed")]
         public async Task B3_traces_should_be_added_to_outgoing_requests_from_content_headers(string requestUri)
