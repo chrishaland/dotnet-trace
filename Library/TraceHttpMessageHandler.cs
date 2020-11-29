@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Haland.DotNetTrace
@@ -17,7 +18,8 @@ namespace Haland.DotNetTrace
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var traces = _serviceProvider.GetRequiredService<TraceMetadata>();
+            var httpContextAccessor = _serviceProvider.GetRequiredService<IHttpContextAccessor>();
+            var traces = httpContextAccessor.HttpContext.RequestServices.GetRequiredService<TraceMetadata>();
 
             request.Headers.Add(Headers.RequestId, traces.RequestId);
 
