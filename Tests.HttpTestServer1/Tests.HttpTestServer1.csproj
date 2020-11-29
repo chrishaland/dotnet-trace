@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\Tests.HttpTestServerUtilities\Tests.HttpTestServerUtilities.csproj" />
+  </ItemGroup>
+
+</Project>

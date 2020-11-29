@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\Tests.HttpTestServer1\Tests.HttpTestServer1.csproj" />
+    <ProjectReference Include="..\Tests.HttpTestServer2\Tests.HttpTestServer2.csproj" />
   </ItemGroup>
 
 </Project>

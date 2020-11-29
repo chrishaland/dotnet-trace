@@ -1,4 +1,4 @@
-﻿namespace Tests.Http
+﻿namespace Tests.HttpTestServerUtilities
 {
     public class TraceMetadataResponse
     {
