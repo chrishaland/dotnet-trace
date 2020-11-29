@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Tests.HttpTestServerUtilities;
 
 namespace Tests.Http
 {
@@ -17,33 +18,31 @@ namespace Tests.Http
         [Test]
         public async Task B3_traces_should_be_set_when_request_headers_exists()
         {
-            var traces = await SUT.GetTraces(request =>
-            {
-                request.Headers.Add("x-b3-traceid", TraceId);
-                request.Headers.Add("x-b3-spanid", SpanId);
-                request.Headers.Add("x-b3-parentspanid", ParentSpanId);
-                request.Headers.Add("x-b3-sampled", Sampled);
-                request.Headers.Add("x-b3-flags", Flags);
-                request.Headers.Add("b3", _b3);
-            });
+            var request = new HttpRequestMessage(HttpMethod.Get, "/");
+            request.Headers.Add("x-b3-traceid", TraceId);
+            request.Headers.Add("x-b3-spanid", SpanId);
+            request.Headers.Add("x-b3-parentspanid", ParentSpanId);
+            request.Headers.Add("x-b3-sampled", Sampled);
+            request.Headers.Add("x-b3-flags", Flags);
+            request.Headers.Add("b3", _b3);
 
+            var traces = await SUT.SendRequest(request, SUT.TestServer1);
             AssertTracesAreSetProperly(traces);
         }
 
         [Test]
         public async Task B3_traces_should_be_set_when_request_content_headers_exists()
         {
-            var traces = await SUT.GetTraces(request =>
-            {
-                request.Content = new StringContent("");
-                request.Content.Headers.Add("x-b3-traceid", TraceId);
-                request.Content.Headers.Add("x-b3-spanid", SpanId);
-                request.Content.Headers.Add("x-b3-parentspanid", ParentSpanId);
-                request.Content.Headers.Add("x-b3-sampled", Sampled);
-                request.Content.Headers.Add("x-b3-flags", Flags);
-                request.Content.Headers.Add("b3", _b3);
-            });
+            var request = new HttpRequestMessage(HttpMethod.Get, "/");
+            request.Content = new StringContent("");
+            request.Content.Headers.Add("x-b3-traceid", TraceId);
+            request.Content.Headers.Add("x-b3-spanid", SpanId);
+            request.Content.Headers.Add("x-b3-parentspanid", ParentSpanId);
+            request.Content.Headers.Add("x-b3-sampled", Sampled);
+            request.Content.Headers.Add("x-b3-flags", Flags);
+            request.Content.Headers.Add("b3", _b3);
 
+            var traces = await SUT.SendRequest(request, SUT.TestServer1);
             AssertTracesAreSetProperly(traces);
         }
 

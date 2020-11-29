@@ -1,15 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Tests.Http
 {
     [TestFixture]
-    public class Request_id_should_be_created_when_request_header_does_not_exist_test
+    public class Request_id_should_be_created_and_passed_through_when_request_header_does_not_exist
     {
         [Test]
         public async Task Request_id_should_be_created_when_request_header_does_not_exist()
         {
-            var traces = await SUT.GetTraces();
+            var traces = await SUT.SendRequest(new HttpRequestMessage(HttpMethod.Get, "/"), SUT.TestServer1);
 
             Assert.Multiple(() =>
              {

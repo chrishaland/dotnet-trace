@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Tests.HttpTestServerUtilities;
 
 namespace Tests.Http
 {
@@ -12,23 +13,21 @@ namespace Tests.Http
         [Test]
         public async Task Request_id_should_be_set_when_request_header_exists()
         {
-            var traces = await SUT.GetTraces(request => 
-            {
-                request.Headers.Add("x-request-id", RequestId);
-            });
+            var request = new HttpRequestMessage(HttpMethod.Get, "/");
+            request.Headers.Add("x-request-id", RequestId);
 
+            var traces = await SUT.SendRequest(request, SUT.TestServer1);
             AssertRequestIdIsSetProperly(traces);
         }
 
         [Test]
         public async Task Request_id_should_be_set_when_request_content_header_exists()
         {
-            var traces = await SUT.GetTraces(request =>
-            {
-                request.Content = new StringContent("");
-                request.Content.Headers.Add("x-request-id", RequestId);
-            });
-
+            var request = new HttpRequestMessage(HttpMethod.Get, "/");
+            request.Content = new StringContent("");
+            request.Content.Headers.Add("x-request-id", RequestId); 
+            
+            var traces = await SUT.SendRequest(request, SUT.TestServer1);
             AssertRequestIdIsSetProperly(traces);
         }
 
