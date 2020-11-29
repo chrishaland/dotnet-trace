@@ -7,7 +7,7 @@ namespace Tests.Http
     [TestFixture]
     public class B3_traces_should_not_be_added_to_outgoing_requests_when_request_headers_does_not_exist_test
     {
-        //[TestCase("/basic")]
+        [TestCase("/basic")]
         [TestCase("/named")]
         [TestCase("/typed")]
         public async Task B3_traces_should_not_be_added_to_outgoing_requests_when_request_headers_does_not_exist(string requestUri)
