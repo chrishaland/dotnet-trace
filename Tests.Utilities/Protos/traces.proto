@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcTracer";
+
+package trace;
+
+service Tracer {
+    rpc GetTraces (TraceRequest) returns (TraceResponse);
+}
+
+message TraceRequest {
+}
+
+message TraceResponse {
+    string requestId = 1;
+    string traceId = 2;
+    string spanId = 3;
+    string parentSpanId = 4;
+    string sampled = 5;
+    string flags = 6;
+    string b3 = 7;
+}
