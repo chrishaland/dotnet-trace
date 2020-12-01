@@ -1,0 +1,33 @@
+parameters:
+- name: displayName
+  type: string
+  default: 'Pack .NET'
+- name: sdk
+  type: string
+  default: '5.0'
+- name: framework
+  type: string
+  default: 'net5.0'
+- name: configuration
+  type: string
+  default: 'Release'
+- name: project
+  type: string
+  default: '.'
+- name: version
+  type: string
+
+jobs: 
+- job: dotnet_pack_${{ replace(parameters['sdk'], '.', '_') }}
+  pool:
+    vmImage: ubuntu-latest
+  displayName: ${{ parameters.displayName }}
+  container: mcr.microsoft.com/dotnet/sdk:${{ parameters.sdk }}
+  steps:
+  - script: |
+      dotnet pack ${{ parameters.project }} \
+      --configuration ${{ parameters.configuration }} \
+      --framework ${{ parameters.framework }} \
+      --output output \
+      -property:"Version=${{ parameters.version }}" \
+      -property:"AllowedReferenceRelatedFileExtensions="

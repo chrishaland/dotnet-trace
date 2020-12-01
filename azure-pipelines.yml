@@ -1,51 +1,26 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
-
 stages:
 
 - stage: build
   displayName: Build
   jobs: 
 
-  - job: build_dotnet_5
-    displayName: Build .NET 5
-    container: mcr.microsoft.com/dotnet/sdk:5.0
-    steps:
-    - script: dotnet build --configuration Release --framework net5.0
+  - template: .azure-pipeline-templates/dotnet-build.yml
 
-  - job: build_dotnet_core_3_1
-    displayName: Build .NET Core 3.1
-    container: mcr.microsoft.com/dotnet/sdk:3.1
-    steps:
-    - script: dotnet build --configuration Release --framework netcoreapp3.1
+  - template: .azure-pipeline-templates/dotnet-build.yml
+    parameters:
+      sdk: '3.1'
+      framework: 'netcoreapp3.1'
 
 - stage: test
   displayName: Test
   jobs: 
 
-  - job: test_dotnet_5
-    displayName: Test .NET 5
-    container: mcr.microsoft.com/dotnet/sdk:5.0
-    steps:
-    - script: dotnet test --framework net5.0 --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
-      continueOnError: 'true'
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: NUnit
-        testResultsFiles: '**/test-result.xml'
-        failTaskOnFailedTests: true
+  - template: .azure-pipeline-templates/dotnet-test.yml
 
-  - job: test_dotnet_core_3_1
-    displayName: Test .NET Core 3.1
-    container: mcr.microsoft.com/dotnet/sdk:3.1
-    steps:
-    - script: dotnet test --framework netcoreapp3.1 --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
-      continueOnError: 'true'
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: NUnit
-        testResultsFiles: '**/test-result.xml'
-        failTaskOnFailedTests: true
+  - template: .azure-pipeline-templates/dotnet-test.yml
+    parameters:
+      sdk: '3.1'
+      framework: 'netcoreapp3.1'
