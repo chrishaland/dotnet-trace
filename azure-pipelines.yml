@@ -31,6 +31,7 @@ stages:
     container: mcr.microsoft.com/dotnet/sdk:5.0
     steps:
     - script: dotnet test --framework net5.0 --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
+      continueOnError: 'true'
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: NUnit
@@ -42,6 +43,7 @@ stages:
     container: mcr.microsoft.com/dotnet/sdk:3.1
     steps:
     - script: dotnet test --framework netcoreapp3.1 --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml"
+      continueOnError: 'true'
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: NUnit
