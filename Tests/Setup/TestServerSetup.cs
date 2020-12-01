@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
@@ -29,15 +30,15 @@ public class TestServerSetup
         TestServer1HttpClient = _testServer1.CreateClient();
 
         _grpcChannel1 = GrpcChannel.ForAddress("https://localhost:5000", 
-            new GrpcChannelOptions { HttpClient = TestServer1HttpClient });
+            new GrpcChannelOptions { HttpHandler = Hander(_testServer1) });
         TestServer1GrpcClient = new GrpcTracer.Tracer.TracerClient(_grpcChannel1);
         
-        _testServer2 = new TestServer(TestServer2Builder(_testServer1.CreateHandler()));
+        _testServer2 = new TestServer(TestServer2Builder(Hander(_testServer1)));
         await _testServer2.Host.StartAsync();
         TestServer2HttpClient = _testServer2.CreateClient();
 
         _grpcChannel2 = GrpcChannel.ForAddress("https://localhost:5010", 
-            new GrpcChannelOptions { HttpClient = TestServer2HttpClient });
+            new GrpcChannelOptions { HttpHandler = Hander(_testServer2) });
         TestServer2GrpcClient = new GrpcTracer.Tracer.TracerClient(_grpcChannel2);
     }
 
@@ -57,6 +58,13 @@ public class TestServerSetup
         TestServer2GrpcClient = null;
     }
 
+    private static HttpMessageHandler Hander(TestServer testServer) =>
+#if NETCOREAPP3_1
+        new ResponseVersionHandler { InnerHandler = testServer.CreateHandler() };
+#else
+        testServer.CreateHandler();
+#endif
+
     private static IWebHostBuilder TestServer1Builder => new WebHostBuilder()
         .UseTestServer()
         .UseConfiguration(new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).Build())
@@ -73,6 +81,17 @@ public class TestServerSetup
             services.AddHttpClient("named").ConfigurePrimaryHttpMessageHandler(_ => handler);
             services.AddHttpClient<Tests.TestServer2.TypedHttpClient>().ConfigurePrimaryHttpMessageHandler(_ => handler);
         });
+
+    private class ResponseVersionHandler : DelegatingHandler
+    {
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = await base.SendAsync(request, cancellationToken);
+            response.Version = request.Version;
+
+            return response;
+        }
+    }
 }
 
 
