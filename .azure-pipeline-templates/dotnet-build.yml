@@ -1,0 +1,25 @@
+parameters:
+- name: sdk
+  type: string
+  default: '5.0'
+- name: framework
+  type: string
+  default: 'net5.0'
+- name: configuration
+  type: string
+  default: 'Release'
+- name: project
+  type: string
+  default: '.'
+  
+jobs: 
+- job: dotnet_build_${{ replace(parameters['sdk'], '.', '_') }}
+  pool:
+    vmImage: ubuntu-latest
+  displayName: Build .NET ${{ parameters.sdk }}
+  container: mcr.microsoft.com/dotnet/sdk:${{ parameters.sdk }}
+  steps:
+  - script: |
+      dotnet build ${{ parameters.project }} \
+      --configuration ${{ parameters.configuration }} \
+      --framework ${{ parameters.framework }}
