@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
-using Grpc.Core;
+﻿using Grpc.Core;
+using GrpcTracer;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Tests.Grpc
 {
@@ -12,7 +13,7 @@ namespace Tests.Grpc
         [Test]
         public async Task Request_id_should_be_created_when_request_header_does_not_exist()
         {
-            var traces = await SUT.GrpcClient1.GetTracesAsync(new GrpcTracer.TraceRequest());
+            var traces = await SUT.GrpcClient1.GetTracesAsync(new TraceRequest());
             Assert.Multiple(() =>
             {
                 Assert.That(traces.RequestId, Is.Not.Null);
@@ -27,7 +28,7 @@ namespace Tests.Grpc
             {
                 { "x-request-id", RequestId }
             };
-            var traces = await SUT.GrpcClient1.GetTracesAsync(new GrpcTracer.TraceRequest(), headers);
+            var traces = await SUT.GrpcClient1.GetTracesAsync(new TraceRequest(), headers);
             Assert.That(traces.RequestId, Is.EqualTo(RequestId));
         }
     }

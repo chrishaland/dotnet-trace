@@ -1,7 +1,8 @@
-﻿using System;
+﻿using GrpcTracer;
 using Haland.DotNetTrace;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Tests.TestServer2
 {
@@ -13,7 +14,7 @@ namespace Tests.TestServer2
             services.AddRouting();
             services.AddControllers();
             services.AddGrpc();
-            services.AddGrpcClient<GrpcTracer.Tracer.TracerBase>(options => 
+            services.AddGrpcClient<Tracer.TracerClient>(options => 
             {
                 options.Address = new Uri("https://localhost:5000");
             });
