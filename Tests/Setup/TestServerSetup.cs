@@ -1,13 +1,14 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Grpc.Net.Client;
+﻿using Grpc.Net.Client;
+using GrpcTracer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 [SetUpFixture]
 public class TestServerSetup
@@ -18,9 +19,9 @@ public class TestServerSetup
     private static GrpcChannel _grpcChannel2;
 
     internal static HttpClient TestServer1HttpClient;
-    internal static GrpcTracer.Tracer.TracerClient TestServer1GrpcClient;
+    internal static Tracer.TracerClient TestServer1GrpcClient;
     internal static HttpClient TestServer2HttpClient;
-    internal static GrpcTracer.Tracer.TracerClient TestServer2GrpcClient;
+    internal static Tracer.TracerClient TestServer2GrpcClient;
 
     [OneTimeSetUp]
     public async Task Before()
@@ -31,7 +32,7 @@ public class TestServerSetup
 
         _grpcChannel1 = GrpcChannel.ForAddress("https://localhost:5000", 
             new GrpcChannelOptions { HttpHandler = Hander(_testServer1) });
-        TestServer1GrpcClient = new GrpcTracer.Tracer.TracerClient(_grpcChannel1);
+        TestServer1GrpcClient = new Tracer.TracerClient(_grpcChannel1);
         
         _testServer2 = new TestServer(TestServer2Builder(Hander(_testServer1)));
         await _testServer2.Host.StartAsync();
@@ -39,7 +40,7 @@ public class TestServerSetup
 
         _grpcChannel2 = GrpcChannel.ForAddress("https://localhost:5010", 
             new GrpcChannelOptions { HttpHandler = Hander(_testServer2) });
-        TestServer2GrpcClient = new GrpcTracer.Tracer.TracerClient(_grpcChannel2);
+        TestServer2GrpcClient = new Tracer.TracerClient(_grpcChannel2);
     }
 
     [OneTimeTearDown]
@@ -76,7 +77,7 @@ public class TestServerSetup
         .UseStartup<Tests.TestServer2.Startup>()
         .ConfigureTestServices(services =>
         {
-            services.AddGrpcClient<GrpcTracer.Tracer.TracerBase>(options => options.ChannelOptionsActions.Add(_ => _.HttpHandler = handler));
+            services.AddGrpcClient<Tracer.TracerClient>().ConfigurePrimaryHttpMessageHandler(_ => handler);
             services.AddHttpClient("").ConfigurePrimaryHttpMessageHandler(_ => handler);
             services.AddHttpClient("named").ConfigurePrimaryHttpMessageHandler(_ => handler);
             services.AddHttpClient<Tests.TestServer2.TypedHttpClient>().ConfigurePrimaryHttpMessageHandler(_ => handler);
