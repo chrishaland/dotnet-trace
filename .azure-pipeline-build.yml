@@ -1,6 +1,8 @@
 name: Build pipeline
 trigger:
-- main
+  branches:
+    include:
+    - main
 
 stages:
 
