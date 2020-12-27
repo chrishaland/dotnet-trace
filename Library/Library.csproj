@@ -7,6 +7,8 @@
     <PackageId>Haland.DotNetTrace</PackageId>
     <Authors>Chris Håland</Authors>
     <Description>This project aims to allow for distributed tracing through .NET applications in Kubernetes by propagating the B3 trace headers.</Description>
+    <PackageProjectUrl>https://github.com/chrishaland/dotnet-trace</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/chrishaland/dotnet-trace/main/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
