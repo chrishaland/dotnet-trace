@@ -1,0 +1,48 @@
+name: Publish pipeline
+trigger:
+  tags:
+    include:
+    - '*'
+
+stages:
+
+- stage: pack
+  displayName: Pack
+  jobs: 
+  - job: pack
+    displayName: Pack
+    pool:
+      vmImage: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:5.0
+    steps:
+    - script: |
+        dotnet pack Library \
+        --configuration Release \
+        --framework net5.0 \
+        --output output \
+        -property:"Version=$(Build.SourceBranchName)" \
+        -property:"AllowedReferenceRelatedFileExtensions="
+    - publish: output/*.nupkg
+      artifact: nupkg
+
+- stage: publish
+  displayName: Publish
+  jobs:
+  - deployment: publish
+    displayName: Publish
+    pool:
+      vmImage: ubuntu-latest
+    container: mcr.microsoft.com/dotnet/sdk:5.0
+    environment: Nuget
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: nupkg
+          - script: |
+              dotnet nuget push *.nupkg \
+              --api-key $(Nuget.ApiKey) \
+              --source https://api.nuget.org/v3/index.json \
+              --skip-duplicate
