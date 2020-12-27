@@ -22,8 +22,8 @@ stages:
         --output output \
         -property:"Version=$(Build.SourceBranchName)" \
         -property:"AllowedReferenceRelatedFileExtensions="
-    - publish: output/*.nupkg
-      artifact: nupkg
+    - publish: output
+      artifact: artifact
 
 - stage: publish
   displayName: Publish
@@ -40,9 +40,9 @@ stages:
           steps:
           - task: DownloadPipelineArtifact@2
             inputs:
-              artifact: nupkg
+              artifact: artifact
           - script: |
-              dotnet nuget push *.nupkg \
+              dotnet nuget push output/*.nupkg \
               --api-key $(Nuget.ApiKey) \
               --source https://api.nuget.org/v3/index.json \
               --skip-duplicate
