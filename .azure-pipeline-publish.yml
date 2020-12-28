@@ -46,4 +46,4 @@ stages:
               dotnet nuget push $(Pipeline.Workspace)/nupkg/*.nupkg \
               --source https://api.nuget.org/v3/index.json \
               --skip-duplicate \
-              --api-key $(Nuget.ApiKey)
+              --api-key $(ApiKey)
