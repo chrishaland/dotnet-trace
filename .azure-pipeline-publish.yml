@@ -41,8 +41,9 @@ stages:
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: artifact
+          - script: ls
           - script: |
-              dotnet nuget push output/*.nupkg \
+              dotnet nuget push *.nupkg \
               --api-key $(Nuget.ApiKey) \
               --source https://api.nuget.org/v3/index.json \
               --skip-duplicate
