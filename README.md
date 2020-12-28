@@ -6,9 +6,9 @@ This project aims to allow for [distributed tracing](https://istio.io/latest/faq
 
 ## Getting started
 
-Add reference to the nuget package (**TBA**):
+Add reference to the nuget package:
 
-> ~~dotnet nuget add Haland.DotNetTrace~~
+> dotnet nuget add Haland.DotNetTrace
 
 In your `Startup.cs` file (or where ever you've placed your service collection registration and middleware pipeline setup):
 
