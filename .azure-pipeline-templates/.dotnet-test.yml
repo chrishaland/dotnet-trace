@@ -20,9 +20,13 @@ jobs:
   container: mcr.microsoft.com/dotnet/sdk:${{ parameters.sdk }}
   steps:
   - script: |
+      dotnet restore ${{ parameters.project }} \
+      --locked-mode
+  - script: |
       dotnet test ${{ parameters.project }} \
       --configuration ${{ parameters.configuration }} \
       --framework ${{ parameters.framework }} \
+      --no-restore \
       --test-adapter-path:. \
       --logger:"nunit;LogFilePath=test-result.xml"
     continueOnError: 'true'

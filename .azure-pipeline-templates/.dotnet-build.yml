@@ -20,6 +20,10 @@ jobs:
   container: mcr.microsoft.com/dotnet/sdk:${{ parameters.sdk }}
   steps:
   - script: |
+      dotnet restore ${{ parameters.project }} \
+      --locked-mode
+  - script: |
       dotnet build ${{ parameters.project }} \
       --configuration ${{ parameters.configuration }} \
-      --framework ${{ parameters.framework }}
+      --framework ${{ parameters.framework }} \
+      --no-restore

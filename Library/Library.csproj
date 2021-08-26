@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net5.0;netcoreapp3.1</TargetFrameworks>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <RootNamespace>Haland.DotNetTrace</RootNamespace>
     <AssemblyName>Haland.DotNetTrace</AssemblyName>
     <PackageId>Haland.DotNetTrace</PackageId>
@@ -23,7 +24,7 @@
   
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="Microsoft.Extensions.Http">
-      <Version>3.1.10</Version>
+      <Version>3.1.18</Version>
     </PackageReference>
   </ItemGroup>
 </Project>
