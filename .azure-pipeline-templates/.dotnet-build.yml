@@ -1,10 +1,10 @@
 parameters:
 - name: sdk
   type: string
-  default: '5.0'
+  default: '6.0'
 - name: framework
   type: string
-  default: 'net5.0'
+  default: 'net6.0'
 - name: configuration
   type: string
   default: 'Release'
@@ -12,18 +12,22 @@ parameters:
   type: string
   default: '.'
   
-jobs: 
-- job: dotnet_build_${{ replace(parameters['sdk'], '.', '_') }}
+jobs:
+- job: dotnet_build_${{ replace(parameters['framework'], '.', '_') }}
   pool:
     vmImage: ubuntu-latest
-  displayName: Build .NET ${{ parameters.sdk }}
-  container: mcr.microsoft.com/dotnet/sdk:${{ parameters.sdk }}
+  displayName: Build ${{ parameters.framework }}
   steps:
-  - script: |
-      dotnet restore ${{ parameters.project }} \
-      --locked-mode
-  - script: |
-      dotnet build ${{ parameters.project }} \
-      --configuration ${{ parameters.configuration }} \
-      --framework ${{ parameters.framework }} \
-      --no-restore
+  - template: .dotnet-restore.yml
+  - task: UseDotNet@2
+    inputs:
+      version: ${{ parameters.sdk }}.x
+      #performMultiLevelLookup: true
+      includePreviewVersions: true
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      command: build
+      projects: '*.sln'
+      packagesDirectory: packages
+      arguments: '--configuration ${{ parameters.configuration }} --framework ${{ parameters.framework }} --no-restore'
