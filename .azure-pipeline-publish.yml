@@ -14,7 +14,7 @@ stages:
     displayName: Pack
     pool:
       vmImage: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:5.0
+    container: mcr.microsoft.com/dotnet/sdk:6.0
     steps:
     - script: |
         dotnet pack Library \
@@ -34,7 +34,7 @@ stages:
     displayName: Publish
     pool:
       vmImage: ubuntu-latest
-    container: mcr.microsoft.com/dotnet/sdk:5.0
+    container: mcr.microsoft.com/dotnet/sdk:6.0
     environment: Nuget
     strategy:
       runOnce:

@@ -1,10 +1,10 @@
 parameters:
 - name: sdk
   type: string
-  default: '5.0'
+  default: '6.0'
 - name: framework
   type: string
-  default: 'net5.0'
+  default: 'net6.0'
 - name: configuration
   type: string
   default: 'Release'
@@ -13,22 +13,24 @@ parameters:
   default: '.'
   
 jobs: 
-- job: dotnet_test_${{ replace(parameters['sdk'], '.', '_') }}
+- job: dotnet_test_${{ replace(parameters['framework'], '.', '_') }}
   pool:
     vmImage: ubuntu-latest
-  displayName: Test .NET ${{ parameters.sdk }}
-  container: mcr.microsoft.com/dotnet/sdk:${{ parameters.sdk }}
+  displayName: Test ${{ parameters.framework }}
   steps:
-  - script: |
-      dotnet restore ${{ parameters.project }} \
-      --locked-mode
-  - script: |
-      dotnet test ${{ parameters.project }} \
-      --configuration ${{ parameters.configuration }} \
-      --framework ${{ parameters.framework }} \
-      --no-restore \
-      --test-adapter-path:. \
-      --logger:"nunit;LogFilePath=test-result.xml"
+  - template: .dotnet-restore.yml
+  - task: UseDotNet@2
+    inputs:
+      version: ${{ parameters.sdk }}.x
+      #performMultiLevelLookup: true
+      includePreviewVersions: true
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    inputs:
+      command: test
+      projects: 'Tests/Tests.csproj'
+      packagesDirectory: packages
+      arguments: '--configuration ${{ parameters.configuration }} --framework ${{ parameters.framework }} --no-restore --test-adapter-path:. --logger:"nunit;LogFilePath=test-result.xml'
     continueOnError: 'true'
   - task: PublishTestResults@2
     inputs:
