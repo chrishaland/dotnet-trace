@@ -22,7 +22,6 @@ jobs:
   - task: UseDotNet@2
     inputs:
       version: ${{ parameters.sdk }}.x
-      #performMultiLevelLookup: true
       includePreviewVersions: true
   - task: DotNetCoreCLI@2
     displayName: Build

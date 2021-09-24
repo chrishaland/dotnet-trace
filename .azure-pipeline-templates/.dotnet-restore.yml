@@ -2,7 +2,6 @@ steps:
 - task: UseDotNet@2
   inputs:
     version: 6.0.x
-    #performMultiLevelLookup: true
     includePreviewVersions: true
 - task: Cache@2
   inputs:
