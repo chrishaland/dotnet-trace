@@ -43,8 +43,13 @@ namespace Haland.DotNetTrace
             var b3 = context.Request.Headers[Headers.B3];
             if (b3 != StringValues.Empty) traces.B3 = b3;
 
+            var properties = new Dictionary<string, object>
+            {
+                { "__requestId", requestId }
+            };
+
             var logger = context.RequestServices.GetRequiredService<ILogger<TraceMiddleware>>();
-            using (logger.BeginScope("__requestId", requestId))
+            using (logger.BeginScope(properties))
             {
                 await _next(context);
             }
