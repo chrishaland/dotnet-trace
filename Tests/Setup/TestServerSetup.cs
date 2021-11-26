@@ -3,15 +3,11 @@ using GrpcTracer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
 [SetUpFixture]
+#pragma warning disable CA1050 // Declare types in namespaces
 public class TestServerSetup
+#pragma warning restore CA1050 // Declare types in namespaces
 {
     private static TestServer _testServer1;
     private static TestServer _testServer2;
@@ -73,7 +69,10 @@ public class TestServerSetup
 
     private static IWebHostBuilder TestServer2Builder(HttpMessageHandler handler) => new WebHostBuilder()
         .UseTestServer()
-        .UseConfiguration(new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory).Build())
+        .UseConfiguration(new ConfigurationBuilder()
+            .AddInMemoryCollection(ConfigurationValues)
+            .Build()
+        )
         .UseStartup<Tests.TestServer2.Startup>()
         .ConfigureTestServices(services =>
         {
@@ -82,6 +81,10 @@ public class TestServerSetup
             services.AddHttpClient("named").ConfigurePrimaryHttpMessageHandler(_ => handler);
             services.AddHttpClient<Tests.TestServer2.TypedHttpClient>().ConfigurePrimaryHttpMessageHandler(_ => handler);
         });
+
+    private static Dictionary<string, string> ConfigurationValues => new()
+    {
+    };
 
     private class ResponseVersionHandler : DelegatingHandler
     {

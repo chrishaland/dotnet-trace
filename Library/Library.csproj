@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://github.com/chrishaland/dotnet-trace</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/chrishaland/dotnet-trace/main/LICENSE</PackageLicenseUrl>
     <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
