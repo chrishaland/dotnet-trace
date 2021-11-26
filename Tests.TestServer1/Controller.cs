@@ -1,23 +1,18 @@
-﻿using System.Threading.Tasks;
-using Haland.DotNetTrace;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace Tests.TestServer1;
 
-namespace Tests.TestServer1
+[Route("")]
+public class Controller : ControllerBase
 {
-    [Route("")]
-    public class Controller : ControllerBase
+    private readonly TraceMetadata _traces;
+
+    public Controller(TraceMetadata traces)
     {
-        private readonly TraceMetadata _traces;
+        _traces = traces;
+    }
 
-        public Controller(TraceMetadata traces)
-        {
-            _traces = traces;
-        }
-
-        public async Task<ActionResult<TraceMetadata>> Get()
-        {
-            await Task.CompletedTask;
-            return new JsonResult(_traces);
-        }
+    public async Task<ActionResult<TraceMetadata>> Get()
+    {
+        await Task.CompletedTask;
+        return new JsonResult(_traces);
     }
 }

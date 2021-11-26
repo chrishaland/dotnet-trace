@@ -1,40 +1,30 @@
-﻿using System.IO;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Haland.DotNetTrace;
-using Microsoft.AspNetCore.Mvc;
-using Tests.Utilities;
+﻿namespace Tests.TestServer2;
 
-namespace Tests.TestServer2
+[Route("basic")]
+public class BasicController : ControllerBase
 {
-    [Route("basic")]
-    public class BasicController : ControllerBase
+    private readonly HttpClient _client;
+
+    public BasicController(IHttpClientFactory clientFactory, TraceMetadata traces)
     {
-        private readonly HttpClient _client;
+        _client = clientFactory.CreateClient();
+    }
 
-        public BasicController(IHttpClientFactory clientFactory, TraceMetadata traces)
-        {
-            _client = clientFactory.CreateClient();
-        }
+    [HttpGet]
+    [HttpPost]
+    public async Task<ActionResult<TraceMetadata>> Traces()
+    {
+        var traces = await GetTraces();
+        return new JsonResult(traces);
+    }
 
-        [HttpGet]
-        [HttpPost]
-        public async Task<ActionResult<TraceMetadata>> Traces()
-        {
-            var traces = await GetTraces();
-            return new JsonResult(traces);
-        }
+    private async Task<TraceMetadataResponse> GetTraces()
+    {
+        var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Get, "https://localhost:5000/"));
+        response.EnsureSuccessStatusCode();
 
-        private async Task<TraceMetadataResponse> GetTraces()
-        {
-            var response = await _client.SendAsync(new HttpRequestMessage(HttpMethod.Get, "https://localhost:5000/"));
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-            var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
-            return await JsonSerializer.DeserializeAsync<TraceMetadataResponse>(contentStream, Serializer.SerializerOptions);
-        }
+        var content = await response.Content.ReadAsStringAsync();
+        var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+        return await JsonSerializer.DeserializeAsync<TraceMetadataResponse>(contentStream, Serializer.SerializerOptions);
     }
 }

@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Haland.DotNetTrace
+namespace Haland.DotNetTrace;
+
+public static class ApplicationBuilderExtensions
 {
-    public static class ApplicationBuilderExtensions
+    public static IApplicationBuilder UseTracing(this IApplicationBuilder app)
     {
-        public static IApplicationBuilder UseTracing(this IApplicationBuilder app)
-        {
-            return app.UseMiddleware<TraceMiddleware>();
-        }
+        return app.UseMiddleware<TraceMiddleware>();
     }
 }
