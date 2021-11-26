@@ -9,10 +9,10 @@ namespace Tests.Utilities
 #if NETCOREAPP3_1
             DefaultSerializerOptions;
 #else
-            new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            new(JsonSerializerDefaults.Web);
 #endif
 
-        internal static readonly JsonSerializerOptions DefaultSerializerOptions = new JsonSerializerOptions
+        internal static readonly JsonSerializerOptions DefaultSerializerOptions = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true,
