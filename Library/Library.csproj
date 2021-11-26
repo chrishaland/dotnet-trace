@@ -10,6 +10,7 @@
     <Description>This project aims to allow for distributed tracing through .NET applications in Kubernetes by propagating the B3 trace headers.</Description>
     <PackageProjectUrl>https://github.com/chrishaland/dotnet-trace</PackageProjectUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/chrishaland/dotnet-trace/main/LICENSE</PackageLicenseUrl>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +19,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.Extensions.Http">
-      <Version>6.0.0-rc.1.21451.13</Version>
+      <Version>6.0.0</Version>
     </PackageReference>
   </ItemGroup>
 
