@@ -1,0 +1,29 @@
+name: Build
+run-name: Build
+on:
+  push:
+    tags:
+      - 'main'
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+      - name: Pack
+        run: |
+          dotnet pack Library \
+          --configuration Release \
+          --output output \
+          -property:"Version=${{ vars.GITHUB_REF_NAME }}" \
+          -property:"AllowedReferenceRelatedFileExtensions="
+      - name: NuGet push
+        run: |
+          dotnet nuget push ./output/*.nupkg \
+          --source https://api.nuget.org/v3/index.json \
+          --skip-duplicate \
+          --api-key ${{ secrets.NUGET_API_KEY }}

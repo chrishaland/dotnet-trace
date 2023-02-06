@@ -21,17 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.TestServer2", "Tests.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Utilities", "Tests.Utilities\Tests.Utilities.csproj", "{D4DD76CF-42E9-4847-B12C-582F4CEE0A7E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Pipeline", "Azure Pipeline", "{BCACE291-4AEC-475F-9431-B68BB389E0B3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Actions", "GitHub Actions", "{F3AFF7C3-82B5-4BB1-B629-0AA64D00ACDA}"
 	ProjectSection(SolutionItems) = preProject
-		.azure-pipeline-build.yml = .azure-pipeline-build.yml
-		.azure-pipeline-publish.yml = .azure-pipeline-publish.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{0E2971BC-A521-4B26-B138-63300FE39582}"
-	ProjectSection(SolutionItems) = preProject
-		.azure-pipeline-templates\.dotnet-build.yml = .azure-pipeline-templates\.dotnet-build.yml
-		.azure-pipeline-templates\.dotnet-restore.yml = .azure-pipeline-templates\.dotnet-restore.yml
-		.azure-pipeline-templates\.dotnet-test.yml = .azure-pipeline-templates\.dotnet-test.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Global
@@ -65,7 +58,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0E2971BC-A521-4B26-B138-63300FE39582} = {BCACE291-4AEC-475F-9431-B68BB389E0B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF0A3E4C-530F-441F-A53F-4DA183CDBB84}
