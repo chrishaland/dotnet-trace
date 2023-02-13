@@ -9,15 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="3.1.2">
+    <PackageReference Include="coverlet.collector" Version="3.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.1" />
-    <PackageReference Include="NunitXml.TestLogger" Version="3.0.127" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="NunitXml.TestLogger" Version="3.0.131" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
@@ -28,7 +28,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing">
-      <Version>6.0.9</Version>
+      <Version>6.0.13</Version>
     </PackageReference>
   </ItemGroup>
 
@@ -40,7 +40,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing">
-      <Version>3.1.29</Version>
+      <Version>3.1.32</Version>
     </PackageReference>
   </ItemGroup>
 
