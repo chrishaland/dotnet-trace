@@ -1,9 +1,9 @@
-name: Build
-run-name: Build
+name: Release
+run-name: Release
 on:
   push:
     tags:
-      - 'main'
+      - '*'
 jobs:
   Build:
     runs-on: ubuntu-latest
@@ -13,7 +13,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '7.0.x'
       - name: Pack
         run: |
           dotnet pack Library \
@@ -21,6 +21,11 @@ jobs:
           --output output \
           -property:"Version=${{ vars.GITHUB_REF_NAME }}" \
           -property:"AllowedReferenceRelatedFileExtensions="
+      - name: actions/create-release@v1
+        with:
+          tag_name: ${{ vars.GITHUB_REF_NAME }}
+          release_name: Release ${{ vars.GITHUB_REF_NAME }}
+          body_path: ./.github/releases/${{ vars.GITHUB_REF_NAME }}.md
       - name: NuGet push
         run: |
           dotnet nuget push ./output/*.nupkg \
