@@ -5,14 +5,6 @@ VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Library", "Library\Library.csproj", "{D048A77C-6065-4F25-93E6-25D743BBC938}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3B55BEB-134E-4944-A6B6-7031C6319EEE}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		.gitignore = .gitignore
-		LICENSE = LICENSE
-		README.md = README.md
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{81950E80-E115-46B2-B44C-73BADF0911B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.TestServer1", "Tests.TestServer1\Tests.TestServer1.csproj", "{0EEC9CA5-F23A-4977-91B2-C85810365D3A}"
@@ -20,12 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.TestServer2", "Tests.TestServer2\Tests.TestServer2.csproj", "{78AA823E-B688-4350-B1DE-8BB5A33100BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Utilities", "Tests.Utilities\Tests.Utilities.csproj", "{D4DD76CF-42E9-4847-B12C-582F4CEE0A7E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub Actions", "GitHub Actions", "{F3AFF7C3-82B5-4BB1-B629-0AA64D00ACDA}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build.yml = .github\workflows\build.yml
-		.github\workflows\release.yml = .github\workflows\release.yml
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
