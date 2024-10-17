@@ -1,0 +1,19 @@
+{
+  name: "Haland.DotNetTrace",
+  image: "mcr.microsoft.com/devcontainers/dotnet:dev-8.0",
+  containerEnv: {
+    "LANG": "en_US.UTF-8",
+    "LANGUAGE": "en_US.UTF-8"
+  },
+  postCreateCommand: {
+    "bash_completion": "echo \"source /etc/profile.d/bash_completion.sh\" >> ~/.bashrc"
+  },
+  features: {
+    "ghcr.io/devcontainers/features/dotnet:2": {
+      "additionalVersions": "9.0,6.0"
+    },
+    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
+      "packages": "vim,ssh,bash-completion"
+    }
+  }
+}
