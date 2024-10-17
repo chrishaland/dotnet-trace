@@ -27,15 +27,15 @@ public class TestServerSetup
         TestServer1HttpClient = _testServer1.CreateClient();
 
         _grpcChannel1 = GrpcChannel.ForAddress("https://localhost:5000", 
-            new GrpcChannelOptions { HttpHandler = Hander(_testServer1) });
+            new GrpcChannelOptions { HttpHandler = Handler(_testServer1) });
         TestServer1GrpcClient = new Tracer.TracerClient(_grpcChannel1);
         
-        _testServer2 = new TestServer(TestServer2Builder(Hander(_testServer1)));
+        _testServer2 = new TestServer(TestServer2Builder(Handler(_testServer1)));
         await _testServer2.Host.StartAsync();
         TestServer2HttpClient = _testServer2.CreateClient();
 
         _grpcChannel2 = GrpcChannel.ForAddress("https://localhost:5010", 
-            new GrpcChannelOptions { HttpHandler = Hander(_testServer2) });
+            new GrpcChannelOptions { HttpHandler = Handler(_testServer2) });
         TestServer2GrpcClient = new Tracer.TracerClient(_grpcChannel2);
     }
 
@@ -55,12 +55,7 @@ public class TestServerSetup
         TestServer2GrpcClient = null;
     }
 
-    private static HttpMessageHandler Hander(TestServer testServer) =>
-#if NETCOREAPP3_1
-        new ResponseVersionHandler { InnerHandler = testServer.CreateHandler() };
-#else
-        testServer.CreateHandler();
-#endif
+    private static HttpMessageHandler Handler(TestServer testServer) => testServer.CreateHandler();
 
     private static IWebHostBuilder TestServer1Builder => new WebHostBuilder()
         .UseTestServer()
@@ -82,20 +77,7 @@ public class TestServerSetup
             services.AddHttpClient<Tests.TestServer2.TypedHttpClient>().ConfigurePrimaryHttpMessageHandler(_ => handler);
         });
 
-    private static Dictionary<string, string> ConfigurationValues => new()
-    {
-    };
-
-    private class ResponseVersionHandler : DelegatingHandler
-    {
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var response = await base.SendAsync(request, cancellationToken);
-            response.Version = request.Version;
-
-            return response;
-        }
-    }
+    private static Dictionary<string, string> ConfigurationValues => new();
 }
 
 
